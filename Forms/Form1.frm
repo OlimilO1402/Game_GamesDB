@@ -250,10 +250,10 @@ Private Sub BtnAddScore_Click()
             m_CurGame.ToListBox LBPlayerScore 'InGameList
             m_CurGame.ToListBox LBPlayerScoreSorted
         Else
-            MsgBox "Geben Sie eine ganze Zahl ein."
+            MsgBox "Please give a number."
         End If
     End If
-    NewListIndex = NewListIndex + 1
+    'NewListIndex = NewListIndex + 1 'öhm, why??
     If NewListIndex = LBPlayerScore.ListCount Then NewListIndex = 0
     LBPlayerScore.ListIndex = NewListIndex
     'End If
