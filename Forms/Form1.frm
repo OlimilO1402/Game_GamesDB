@@ -180,7 +180,8 @@ Private Sub UpdateAllLB()
     MApp.Players.ToListBox LBPlayers
     LBPlayers.ListIndex = li
     li = LBGames.ListIndex
-    MApp.Games.ToListBox LBGames: LBGames.ListIndex = li
+    MApp.Games.ToListBox LBGames
+    If LBGames.ListCount > 0 Then LBGames.ListIndex = li
     If Not m_CurGame Is Nothing Then
         li = LBPlayerScore.ListIndex
         m_CurGame.ToListBox LBPlayerScore: LBPlayerScore.ListIndex = li
@@ -240,7 +241,13 @@ End Sub
 
 Private Sub BtnAddScore_Click()
     Call LBPlayerScore_Click
-    If m_CurPlayerScore Is Nothing Then Exit Sub
+    If m_CurPlayerScore Is Nothing Then
+        If LBPlayerScore.ListCount = 0 Then
+        Else
+            MsgBox "Select a player first."
+            Exit Sub
+        End If
+    End If
     Dim NewListIndex As Long: NewListIndex = LBPlayerScore.ListIndex
     Dim Name As String: Name = m_CurPlayerScore.Player.Name ' MApp.Players.Item(m_CurPlayerScore.ID)
     Dim Pts As String: Pts = InputBox("Diese Punkte werden zum Punktestand (" & CStr(m_CurPlayerScore.Score) & ") des Spielers " & Name & " hinzuaddiert:", "Neue Punkte des Spielers: " & Name)
@@ -304,6 +311,7 @@ End Sub
 
 Private Sub LBGames_Click()
     'beim Klick in die Listbox das aktuelle Spiel setzen
+    Set m_CurPlayerScore = Nothing
     If LBGames.ListCount = 0 Then Exit Sub
     If LBGames.ListIndex < 0 Then Exit Sub
     Dim s As String: s = LBGames.List(LBGames.ListIndex)
@@ -321,6 +329,10 @@ End Sub
 
 Private Sub mnuFileNew_Click()
     MApp.FileNew
+    Set m_CurGame = Nothing
+    Set m_CurPlayer = Nothing
+    Set m_CurPlayerScore = Nothing
+    
     UpdateAllLB
 End Sub
 
